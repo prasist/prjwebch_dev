@@ -67,10 +67,10 @@ return [
             ]
         ],
 
-
+/*'host'     => env('DB_HOST', '177.101.149.118'),*/
 'pgsql' => [
             'driver'   => 'pgsql',
-            'host'     => env('DB_HOST', '177.101.149.118'),
+            'host'     => env('DB_HOST', 'localhost'),
             'database' => env('DB_DATABASE', 'webigrejas'),
             'username' => env('DB_USERNAME', 'postgres'),
             'password' => env('DB_PASSWORD', 'b1c0d3p4t044'),
@@ -106,7 +106,7 @@ return [
 
 'jasper_report' => [
             'driver'   => 'postgres',
-            'host'     => env('DB_HOST', '177.101.149.118'),
+            'host'     => env('DB_HOST', 'localhost'),
             'database' => env('DB_DATABASE', 'webigrejas'),
             'username' => env('DB_USERNAME', 'postgres'),
             'password' => env('DB_PASSWORD', 'b1c0d3p4t044'),
