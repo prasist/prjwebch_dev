@@ -258,7 +258,7 @@
                                                       <div class="modal-content">
                                                         <div class="modal-header">
                                                           <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-                                                          <h4 class="modal-title" id="myModalLabel">Rateio por Centro de Custo</h4>
+                                                          <h4 class="modal-title" id="myModalLabel">Rateio</h4>
                                                         </div>
                                                         <div class="modal-body">
 
@@ -275,6 +275,17 @@
                                                              </div>
 
                                                              <div class="row">
+
+                                                                    <div class="col-xs-4">
+                                                                          <label for="rateio_pc" class="control-label">Plano de Contas</label>
+
+                                                                          <select id="rateio_pc" name="rateio_pc" placeholder="(Selecionar)" data-live-search="true" data-none-selected-text="Nenhum item selecionado" class="form-control selectpicker" style="width: 100%;" onchange="">
+                                                                          <option  value=""></option>
+                                                                          @foreach($plano_contas as $item)
+                                                                                 <option  value="{{$item->id}}">{{$item->nome}}</option>
+                                                                          @endforeach
+                                                                          </select>
+                                                                    </div>
 
                                                                     <div class="col-xs-4">
                                                                           <label for="rateio_cc" class="control-label">Centro de Custo</label>
@@ -318,6 +329,7 @@
                                                                         <table id="mais_rateios" class="table table-bordered table-hover">
                                                                         @if (isset($rateio_titulos))
                                                                             <tr>
+                                                                                  <td>Plano de Contas</td>
                                                                                   <td>Centro de Custo</td>
                                                                                   <td>%</td>
                                                                                   <td>Valor</td>
@@ -325,7 +337,9 @@
                                                                             </tr>
                                                                             @foreach($rateio_titulos as $item)
                                                                             <tr>
+                                                                                  <input id="hidden_id_rateio_pc[]" name = "hidden_id_rateio_pc[]" type="hidden" class="form-control ccusto" value="{{$item->planos_contas_id}}">
                                                                                   <input id="hidden_id_rateio_cc[]" name = "hidden_id_rateio_cc[]" type="hidden" class="form-control ccusto" value="{{$item->centros_custos_id}}">
+                                                                                  <td><input id="inc_pc[]" readonly name = "inc_pc[]" type="text" class="form-control" value="{{$item->nome_pc}}"></td>
                                                                                   <td><input id="inc_cc[]" readonly name = "inc_cc[]" type="text" class="form-control" value="{{$item->nome}}"></td>
                                                                                   <td><input id="inc_perc[]" readonly name = "inc_perc[]" type="text" class="form-control valores" value='{{ str_replace(".", ",", $item->percentual) }}'></td>
                                                                                   <td><input id="inc_valor[]" readonly name = "inc_valor[]" type="text" class="form-control valores" value='{{ str_replace(".", ",", $item->valor) }}'></td>
@@ -341,6 +355,7 @@
                                                                         <input type="hidden" name="hidden_id_rateio_cc[]" id="hidden_id_rateio_cc[]" value="">
                                                                               <table id="mais_rateios" class="table table-bordered table-hover">
                                                                                   <tr>
+                                                                                        <td>Plano de Contas</td>
                                                                                         <td>Centro de Custo</td>
                                                                                         <td>%</td>
                                                                                         <td>Valor</td>
@@ -524,6 +539,15 @@
                                                                                       <input id="parcelas"  placeholder="(Opcional)" name = "parcelas" type="number" class="form-control" value="{{$dados[0]->numpar}}">
                                                                                 @else
                                                                                       <input id="parcelas"  placeholder="(Opcional)" name = "parcelas" type="number" class="form-control" value="">
+                                                                                @endif
+                                                                          </div>
+
+                                                                          <div class="col-xs-2">
+                                                                                <label for="dias" class="control-label">N. Dias</label>
+                                                                                @if (isset($dados))
+                                                                                      <input id="dias"  placeholder="(Opcional)" name = "dias" type="number" class="form-control" value="{{$dados[0]->numdia}}">
+                                                                                @else
+                                                                                      <input id="dias"  placeholder="(Opcional)" name = "dias" type="number" class="form-control" value="">
                                                                                 @endif
                                                                           </div>
 

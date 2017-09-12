@@ -221,6 +221,13 @@
 
       //Adiciona novo valor de rateio
       function incluir_rateio() {
+            //Plano de contas
+            if ($("#rateio_pc").val() == "")
+            {
+                alert("Informe o Plano de Contas");
+                return false;
+            }
+
             //Centro de custo
             if ($("#rateio_cc").val() == "")
             {
@@ -236,20 +243,27 @@
             }
 
             //Pega dados dos campos
+            var ind_planoconta = document.getElementById("rateio_pc").selectedIndex;
+            var texto_rateio_pc = document.getElementById("rateio_pc").options;
+
             var ind_centrocusto = document.getElementById("rateio_cc").selectedIndex;
             var texto_rateio = document.getElementById("rateio_cc").options;
 
             //Criar campos dinamicamente
+            var sPlanoContaID = '<tr><input id="hidden_id_rateio_pc[]" name = "hidden_id_rateio_pc[]" type="hidden" class="form-control" value=" ' + ind_planoconta + '">';
             var sCentroCustoID = '<tr><input id="hidden_id_rateio_cc[]" name = "hidden_id_rateio_cc[]" type="hidden" class="form-control" value=" ' + ind_centrocusto + '">';
+            var sPlanoConta = '<td><input id="inc_pc[]" readonly name = "inc_pc[]" type="text" class="form-control" value="' + texto_rateio_pc[ind_planoconta].text + '"></td>';
             var sCentroCusto = '<td><input id="inc_cc[]" readonly name = "inc_cc[]" type="text" class="form-control" value="' + texto_rateio[ind_centrocusto].text + '"></td>';
             var sPercentual = '<td><input id="inc_perc[]" readonly name = "inc_perc[]" type="text" class="form-control valores" value="' + document.getElementById("perc_rateio").value + '"></td>';
             var sValor = '<td><input id="inc_valor[]" readonly name = "inc_valor[]" type="text" class="form-control valores" value="' + document.getElementById("valor_rateio").value + '"></td>';
             var sBotao = '<td><button data-toggle="tooltip" data-placement="top" title="Excluir Ítem"  class="btn btn-danger btn-sm remover"><spam class="glyphicon glyphicon-trash"></spam></button></td>';
 
             /*Gera codigo HTML*/
-            document.getElementById("mais_rateios").innerHTML = document.getElementById("mais_rateios").innerHTML + sCentroCustoID + sCentroCusto + sPercentual + sValor + sBotao + '</tr>';
+            document.getElementById("mais_rateios").innerHTML = document.getElementById("mais_rateios").innerHTML + sPlanoContaID + sCentroCustoID + sPlanoConta + sCentroCusto + sPercentual + sValor + sBotao + '</tr>';
 
             /*Limpar campos*/
+            $("#rateio_pc").val('');
+            $("#rateio_pc").trigger('change');
             $("#rateio_cc").val('');
             $("#rateio_cc").trigger('change');
             $("#perc_rateio").val('');

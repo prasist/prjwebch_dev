@@ -278,15 +278,22 @@ class TitulosController extends Controller
 
           $qtd_parcelas = ($input['parcelas']=="" ? 1 : $input['parcelas']); /*Qtd de parcelas*/
           $vencimento = $this->formatador->FormatarData($input["data_vencimento"]); //Primeiro vencimento
+          $qtd_dias = $input['dias'];
           $date = new \DateTime($vencimento);
 
             if ($tipo_operacao=="create") { //novo registro
                 for ($i=1; $i <= $qtd_parcelas; $i++) { //Se for passado parcela maior que 1
                      $dados = new titulos();
                      $this->persisteDados($tipo, $dados, $input, $i, $vencimento, $qtd_parcelas, $date, $tipo_operacao);
-                     //Acrescenta um mes na data de vencimento
-                     $interval = new \DateInterval('P1M');
-                     $vencimento = $date->add($interval);
+                     if($qtd_dias == ""){
+                        //Acrescenta um mes na data de vencimento
+                        $interval = new \DateInterval('P1M');
+                        $vencimento = $date->add($interval);
+                     }else{
+                        //Acrescenta x dias na data de vencimento
+                        $interval = new \DateInterval('P' . $qtd_dias . 'D');
+                        $vencimento = $date->add($interval);
+                     }
                 }
             }
             else { //update
@@ -392,6 +399,7 @@ class TitulosController extends Controller
       $dados->numdoc  = $input['numdoc'];
       $dados->serie  = $input['serie'];
       $dados->numpar  = $seq;
+      $dados->numdia = ($input['dias']=="" ? null : $input['dias']);
       $dados->users_id  = Auth::user()->id;
       $dados->save();
 
@@ -425,6 +433,7 @@ class TitulosController extends Controller
                                     'titulos_id' => $dados->id,
                                     'empresas_id' =>  $this->dados_login->empresas_id,
                                     'empresas_clientes_cloud_id' => $this->dados_login->empresas_clientes_cloud_id,
+                                    'planos_contas_id' => $input['hidden_id_rateio_pc'][$i_index],
                                     'centros_custos_id' => $selected,
                                     'valor' => $this->formatador->GravarCurrency($input['inc_valor'][$i_index]),
                                     'percentual' => $this->formatador->GravarCurrency($input['inc_perc'][$i_index]),
@@ -480,7 +489,8 @@ class TitulosController extends Controller
         ->OrderBy('nome')
         ->get();
 
-        $rateio_titulos = \App\Models\rateio_titulos::select('percentual', 'valor', 'centros_custos_id', 'nome')
+        $rateio_titulos = \App\Models\rateio_titulos::select('percentual', 'valor', 'centros_custos_id', 'centros_custos.nome AS nome', 'planos_contas_id', 'planos_contas.nome AS nome_pc')
+        ->join('planos_contas', 'planos_contas.id' , '=' , 'rateio_titulo.planos_contas_id')
         ->join('centros_custos', 'centros_custos.id' , '=' , 'rateio_titulo.centros_custos_id')
         ->where('rateio_titulo.empresas_clientes_cloud_id', $this->dados_login->empresas_clientes_cloud_id)
         ->where('rateio_titulo.empresas_id', $this->dados_login->empresas_id)
@@ -495,7 +505,7 @@ class TitulosController extends Controller
         $log = \DB::select($sQuery,[$id]);
 
 
-        $sQuery = "select titulos.saldo_a_pagar, pessoas.razaosocial, titulos.id, to_char(to_date(data_vencimento, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_vencimento, to_char(to_date(data_pagamento, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_pagamento, to_char(to_date(data_emissao, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_emissao, valor, acrescimo, desconto, descricao, tipo, status, valor_pago, pessoas_id, contas_id, planos_contas_id, centros_custos_id, titulos.obs, numpar, numdoc, serie, grupos_titulos_id, alteracao_status ";
+        $sQuery = "select titulos.saldo_a_pagar, pessoas.razaosocial, titulos.id, to_char(to_date(data_vencimento, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_vencimento, to_char(to_date(data_pagamento, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_pagamento, to_char(to_date(data_emissao, 'yyyy-MM-dd'), 'DD/MM/YYYY') AS data_emissao, valor, acrescimo, desconto, descricao, tipo, status, valor_pago, pessoas_id, contas_id, planos_contas_id, centros_custos_id, titulos.obs, numpar, numdoc, serie, grupos_titulos_id, alteracao_status, numdia ";
         $sQuery .= " from titulos left join pessoas on pessoas.id = titulos.pessoas_id";
         $sQuery .= " where titulos.tipo = ? ";
         $sQuery .= " and titulos.empresas_id = ? ";

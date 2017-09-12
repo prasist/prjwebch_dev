@@ -56,7 +56,7 @@
         <ul class="treeview-menu">
 
           @if(Gate::check('verifica_permissao', [1 ,'acessar']))
-          <li><a href="{{ url('/clientes')}}"><i class="fa fa-angle-double-right"></i> Igreja Sede</a></li>
+          <!--<li><a href="{{ url('/clientes')}}"><i class="fa fa-angle-double-right"></i> Igreja Sede</a></li>-->
           @endif
 
           @if(Gate::check('verifica_permissao', [27 ,'acessar']))

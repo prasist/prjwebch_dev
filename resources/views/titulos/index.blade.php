@@ -252,7 +252,7 @@
                                     <input type="hidden" id = "campo_valor[{!!$value->id!!}]" name="campo_valor[{!!$value->id!!}]" value='{{ str_replace(".", ",", $value->valor) }}'>
                             </td>
                             <td>
-                                    <a href="#" id="data_pagto[{!!$value->id!!}]" name="data_pagto[{!!$value->id!!}]" class="data_pagto"  data-type="text" data-column="data_pagto" data-url="{{ url('/titulos/' . $value->id . '/update_inline/data_pagto/' . $tipo)}}" data-pk="{!!$value->id!!}" data-title="change" data-name="data_pagto">
+                                    <a href="#" id="data_pagto[{!!$value->id!!}]" name="data_pagto[{!!$value->id!!}]" class="data_pagto"  data-type="text" data-column="data_pagto" data- data-url="{{ url('/titulos/' . $value->id . '/update_inline/data_pagto/' . $tipo)}}" data-pk="{!!$value->id!!}" data-title="change" data-name="data_pagto">
                                          {{$value->data_pagamento}}
                                     </a>
                                     <input type="hidden" id = "campo_data_pagto[{!!$value->id!!}]" name="campo_data_pagto[{!!$value->id!!}]" value="{{$value->data_pagamento}}">
@@ -372,6 +372,7 @@
       //Abre menu
       $(document).ready(function(){
          $("#financ").addClass("treeview active");
+
       });
 
       var myApp;

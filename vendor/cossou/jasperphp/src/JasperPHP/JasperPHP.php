@@ -130,6 +130,7 @@ class JasperPHP
 
         }
 
+
         $this->redirect_output  = $redirect_output;
         $this->background       = $background;
         $this->the_command      = escapeshellcmd($command);
@@ -147,6 +148,7 @@ class JasperPHP
         $command .= " list_parameters ";
 
         $command .= $input_file;
+        
 
         $this->the_command = escapeshellcmd($command);
 
@@ -160,6 +162,7 @@ class JasperPHP
 
     public function execute($run_as_user = false)
     {
+
         if( $this->redirect_output && !$this->windows)
             $this->the_command .= " > /dev/null 2>&1";
 
@@ -171,11 +174,11 @@ class JasperPHP
 
         $output     = array();
         $return_var = 0;
-
+        //dd($this->the_command);
         exec($this->the_command, $output, $return_var);
 
         if($return_var != 0)
-            throw new \Exception("Your report has an error and couldn't be processed! Try to output the command using the function `output();` and run it manually in the console.", 1);
+            throw new \Exception("Deu Ruim...Your report has an error and couldn't be processed! Try to output the command using the function `output();` and run it manually in the console.", 1);
 
         return $output;
     }
